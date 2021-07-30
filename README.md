@@ -5,7 +5,25 @@
 
 #### 模块架构
 架构说明
+
 aclr：异步复位，同步释放端口
-33
+
+| 写入侧     |         |
+|---------|---------|
+| wrclk   | 写时钟     |
+| data    | 数据输入端口  |
+| wrreq   | 置1写使能   |
+| wrfull  | 置1为写满   |
+| wrusedw | fifo使用量 |
+
+| 读取侧     |         |
+|---------|---------|
+| rdclk   | 读时钟     |
+| q       | 数据输出端口  |
+| rdreq   | 置1读使能   |
+| rdempty | 置1为读空   |
+| rdusedw | fifo使用量 |
+
+
 ![输入图片说明](https://images.gitee.com/uploads/images/2021/0730/195358_7e1fa6b9_8241888.png "未命名绘图.png")
 
