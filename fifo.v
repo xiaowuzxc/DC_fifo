@@ -1,5 +1,5 @@
 
-module fifo_16x512 (//16bit*2048
+module fif (//16bit*2048
 	input aclr,
 	input [kuan-1:0] data,//wrclk，写数据
 	input rdclk,//读时钟
