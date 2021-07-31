@@ -54,7 +54,7 @@ always @(posedge rdclk or negedge aclr)
 begin
 	if(~aclr)
 	begin
-		fifo_reg[0]<=0;//fifo第一个寄存器复位
+		//fifo_reg[0]<=0;//fifo第一个寄存器复位
 		r_addr<=0;//fifo第一个寄存器复位
 		w2r0<=0;
 		w2r1<=0;
