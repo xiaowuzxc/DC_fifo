@@ -3,8 +3,7 @@
 #### 介绍
 使用verilog编写的异步fifo，读写端口各有一组时钟、读写使能、读写端口、满空指示、fifo使用量。本模块既不可靠，也不成熟，更不实用；注释写得多，可以作为学习参考。
 
-fifo_async.v为源文件
-fifo_async.pdf为RTL视图
+fifo_async.v为源文件，fifo_async.pdf为RTL视图
 #### 模块架构
 架构说明
 
