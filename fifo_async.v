@@ -52,12 +52,12 @@ r2wptr;//二进制读指针，写时钟域的
 wire [ASIZE:0]rptr_grey; //读指针格雷码
 
 assign wptr_grey = (wptr >> 1) ^ wptr;//二进制写指针转格雷码
-integer i;
+integer i;//循环计数
 always @ (wq2_rptr_grey)//读指针格雷码转写域读指针
 begin    
     r2wptr[ASIZE-1]=wq2_rptr_grey[ASIZE-1];    
-    for(i=ASIZE-2;i>=0;i=i-1)        
-        r2wptr[i]=r2wptr[i+1]^wq2_rptr_grey[i];
+    for(i=ASIZE-2;i>=0;i=i-1)
+        r2wptr[i]=r2wptr[i+1]^wq2_rptr_grey[i];//行为级描述，综合成组合逻辑
 end
 
 
