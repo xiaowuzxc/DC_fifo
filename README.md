@@ -1,11 +1,12 @@
 # 异步FIFO的纯verilog实现
 
 #### 介绍
-使用verilog编写的异步fifo，读写端口各有一组时钟、读写使能、读写端口、满空指示、fifo使用量。本模块既不可靠，也不成熟，更不实用；注释写得多，可以作为学习参考。
+使用verilog编写的异步fifo，读写端口各有一组时钟、读写使能、读写端口、满空指示、fifo使用量。本模块注释写得多，可以作为学习参考。
 
 fifo_async.v为源文件，fifo_async.pdf为RTL视图
 
-testbench文件夹中有仿真文件，需要安装VCS，Verdi，cd ./verification后可以使用makefile。make all执行仿真，make clean清理文件。
+testbench文件夹中有建立好的仿真工程，分别是VCS+Verdi和iverilog+gtkwave。喜欢哪个用哪个，配好环境make就行了
+
 #### 模块架构
 架构说明
 
