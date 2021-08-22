@@ -34,7 +34,7 @@ module fifo_async #(
     output reg  [ASIZE-1:0] ruse//读域fifo已使用空间
 );
 
-reg  [DSIZE-1:0] buffer [1<<ASIZE：1];  // 让综合器自己综合真双端RAM
+reg  [DSIZE-1:0] buffer [1<<ASIZE:1];  // 让综合器自己综合真双端RAM
 
 reg [ASIZE:0] wptr,//写指针 
 wq_wptr_grey, //写指针格雷码，写时钟打1拍
