@@ -40,10 +40,10 @@ module tb_fifo_async (); /* this is automatically generated */
 		r_en='1;
 		#100;
 		r_en='0;
-		#1000;
+		#400;
 		w_en='0;
 		r_en='1;
-		#1000;
+		#400;
 		$finish;
 	end
 	logic [ASIZE-1:0]i;
