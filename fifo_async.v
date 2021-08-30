@@ -51,6 +51,7 @@ wq2_rptr_grey, //读指针格雷码，写时钟打2拍
 r2wptr;//二进制读指针，写时钟域的
 wire [ASIZE:0]rptr_grey; //读指针格雷码
 
+//-------格雷码与二进制编码转换---------//
 assign wptr_grey = (wptr >> 1) ^ wptr;//二进制写指针转格雷码
 integer i;//循环计数
 always @ (wq2_rptr_grey)//读指针格雷码转写域读指针
@@ -69,6 +70,7 @@ begin
     for(j=ASIZE-2;j>=0;j=j-1)        
         w2rptr[j]=w2rptr[j+1]^rq2_wptr_grey[j];
 end
+//-----------格雷码与二进制编码转换----------//
 //----------------写指针跨时钟域-------------//
 always @ (posedge wclk or negedge rst_n)
     if(~rst_n)
