@@ -8,5 +8,6 @@ cd ./make后可以使用makefile。make执行仿真，make clean清理文件。
 
 windows：  
 进入make文件夹，双击make.bat  
-iverilog安装包：http://bleyer.org/icarus/
+iverilog安装包：http://bleyer.org/icarus/  
+安装最新版本
 
