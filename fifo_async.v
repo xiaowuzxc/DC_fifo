@@ -124,11 +124,11 @@ always @ (posedge wclk)
         buffer[wptr[ASIZE-1:0]] <= wdata;//写数据
 
 //----------读判断+数据输出+指针移动------------//
-wire            rdready = ~r_ok | r_en;
+wire            rdready = ~r_ok | r_en;//准备去读取
 reg             rdack;
 reg [DSIZE-1:0] rddata;
 reg [DSIZE-1:0] keepdata;
-assign rdata = rdack ? rddata : keepdata;
+
 
 always @ (posedge rclk or negedge rst_n)
     if(~rst_n) //异步复位
@@ -141,15 +141,17 @@ always @ (posedge rclk or negedge rst_n)
     else 
     begin
         r_ok <= ~r_empty | ~rdready;//可读判断
-        rdack <= ~r_empty & rdready;//是否读取
+        rdack <= ~r_empty & rdready;//fifo不是空的，而且读取了
         if(~r_empty & rdready)
             rptr <= rptr + 1;//读完地址++
         if(rdack)
-            keepdata <= rddata;//不读，保持上一次数据
+            keepdata <= rddata;//读取的数据放进另一个寄存器keepdata
     end
 
 always @ (posedge rclk)
-    rddata <= buffer[rptr[ASIZE-1:0]];//输出数据
+    rddata <= buffer[rptr[ASIZE-1:0]];//输出的数据放进rddata
+
+assign rdata = rdack ? rddata : keepdata;//如果fifo不是空的，而且读取了数据，就输出rddata。如果没有读取，就保持上一次输出keepdata。
 //----------读判断+数据输出+指针移动------------//
 
 //--------------写域fifo已使用空间------------
