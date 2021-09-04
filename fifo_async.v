@@ -44,7 +44,6 @@ w2rptr;//二进制写指针，读时钟域的
 wire [ASIZE:0]wptr_grey;//写指针格雷码
 
 reg [ASIZE:0] rptr, //读指针
-
 rq_rptr_grey, //读指针格雷码，读时钟打1拍
 wq1_rptr_grey, //读指针格雷码，写时钟打1拍
 wq2_rptr_grey, //读指针格雷码，写时钟打2拍
