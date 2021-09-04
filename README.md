@@ -5,7 +5,8 @@
 
 fifo_async.v为源文件，fifo_async.pdf为RTL视图
 
-testbench文件夹中有建立好的仿真工程，分别是VCS+Verdi和iverilog+gtkwave。喜欢哪个用哪个，配好环境make就行了
+testbench文件夹中有建立好的仿真工程，分别是VCS+Verdi和iverilog+gtkwave。喜欢哪个用哪个，配好环境make就行了  
+iverilog+gtkwave加入windows支持
 
 #### 模块架构
 架构说明
