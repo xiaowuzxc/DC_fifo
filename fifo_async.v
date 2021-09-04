@@ -124,11 +124,10 @@ always @ (posedge wclk)
         buffer[wptr[ASIZE-1:0]] <= wdata;//写数据
 
 //----------读判断+数据输出+指针移动------------//
-wire            rdready = ~r_ok | r_en;//准备去读取
-reg             rdack;
-reg [DSIZE-1:0] rddata;
-reg [DSIZE-1:0] keepdata;
-
+wire            rdready = ~r_ok | r_en;//准备去读取，为1
+reg             rdack;//fifo不是空的，而且读取了，为1
+reg [DSIZE-1:0] rddata;//当前数据
+reg [DSIZE-1:0] keepdata;//保存上一次的输出
 
 always @ (posedge rclk or negedge rst_n)
     if(~rst_n) //异步复位
