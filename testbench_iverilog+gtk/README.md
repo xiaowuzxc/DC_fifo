@@ -2,7 +2,6 @@
 
 
 linux：  
-
 cd ./make后可以使用makefile。make执行仿真，make clean清理文件。  
 用linux的应该不会连这都不会装吧
 
