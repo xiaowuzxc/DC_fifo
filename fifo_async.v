@@ -71,34 +71,34 @@ begin
 end
 //-----------格雷码与二进制编码转换----------//
 //----------------写指针跨时钟域-------------//
-always @ (posedge wclk or negedge rst_n)
+always @ (posedge wclk or negedge rst_n)//组合逻辑输出，写时钟域打一拍
     if(~rst_n)
         wq_wptr_grey <= 0;
     else
         wq_wptr_grey <= wptr_grey;
-always @ (posedge rclk or negedge rst_n)
+always @ (posedge rclk or negedge rst_n)//读时钟域打一拍
     if(~rst_n)
         rq1_wptr_grey <= 0;
     else
         rq1_wptr_grey <= wq_wptr_grey;
-always @ (posedge rclk or negedge rst_n)
+always @ (posedge rclk or negedge rst_n)//读时钟域打一拍
     if(~rst_n)
         rq2_wptr_grey <= 0;
     else
         rq2_wptr_grey <= rq1_wptr_grey;
 //----------------写指针跨时钟域-------------//
 //----------------读指针跨时钟域-------------//
-always @ (posedge rclk or negedge rst_n)
+always @ (posedge rclk or negedge rst_n)//组合逻辑输出，读时钟域打一拍
     if(~rst_n)
         rq_rptr_grey <= 0;
     else
         rq_rptr_grey <= rptr_grey;
-always @ (posedge wclk or negedge rst_n)
+always @ (posedge wclk or negedge rst_n)//写时钟域打一拍
     if(~rst_n)
         wq1_rptr_grey <= 0;
     else
         wq1_rptr_grey <= rq_rptr_grey;
-always @ (posedge wclk or negedge rst_n)
+always @ (posedge wclk or negedge rst_n)//写时钟域打一拍
     if(~rst_n)
         wq2_rptr_grey <= 0;
     else
