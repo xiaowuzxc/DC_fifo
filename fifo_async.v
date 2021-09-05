@@ -14,7 +14,7 @@
 // Editor : sublime text4, tab size (4)
 // -----------------------------------------------------------------------------
 `timescale 1ns/1ns
-module stream_async_fifo #(
+module fifo_async #(
     parameter   DSIZE = 8,//fifo宽度
     parameter   ASIZE = 10//fifo深度
 )
@@ -44,19 +44,19 @@ w2rptr;//二进制写指针，读时钟域的
 wire [ASIZE:0]wptr_grey;//写指针格雷码
 
 reg [ASIZE:0] rptr, //读指针
+
 rq_rptr_grey, //读指针格雷码，读时钟打1拍
 wq1_rptr_grey, //读指针格雷码，写时钟打1拍
 wq2_rptr_grey, //读指针格雷码，写时钟打2拍
 r2wptr;//二进制读指针，写时钟域的
 wire [ASIZE:0]rptr_grey; //读指针格雷码
 
-//-------格雷码与二进制编码转换---------//
 assign wptr_grey = (wptr >> 1) ^ wptr;//二进制写指针转格雷码
-integer i;//循环计数
+integer i;
 always @ (wq2_rptr_grey)//读指针格雷码转写域读指针
 begin    
     r2wptr[ASIZE-1]=wq2_rptr_grey[ASIZE-1];    
-    for(i=ASIZE-2;i>=0;i=i-1)
+    for(i=ASIZE-2;i>=0;i=i-1)        
         r2wptr[i]=r2wptr[i+1]^wq2_rptr_grey[i];//行为级描述，综合成组合逻辑
 end
 
@@ -67,9 +67,8 @@ always @ (rq2_wptr_grey)//写指针格雷码转读域写指针
 begin    
     w2rptr[ASIZE-1]=rq2_wptr_grey[ASIZE-1];    
     for(j=ASIZE-2;j>=0;j=j-1)        
-        w2rptr[j]=w2rptr[j+1]^rq2_wptr_grey[j];
+        w2rptr[j]=w2rptr[j+1]^rq2_wptr_grey[j];//行为级描述，综合成组合逻辑
 end
-//-----------格雷码与二进制编码转换----------//
 //----------------写指针跨时钟域-------------//
 always @ (posedge wclk or negedge rst_n)//组合逻辑输出，写时钟域打一拍
     if(~rst_n)
@@ -108,7 +107,6 @@ always @ (posedge wclk or negedge rst_n)//写时钟域打一拍
 assign w_full  = wq2_rptr_grey == {~wptr_grey[ASIZE:ASIZE-1], wptr_grey[ASIZE-2:0]};//写满判断，指针绕了一圈，最高位不同
 assign r_empty = rq2_wptr_grey == rptr_grey;//读空判断
 
-//assign itready = rst_n & ~w_full;
 
 always @ (posedge wclk or negedge rst_n)
     if(~rst_n) //异步复位
@@ -128,6 +126,7 @@ wire            rdready = ~r_ok | r_en;//准备去读取，为1
 reg             rdack;//fifo不是空的，而且读取了，为1
 reg [DSIZE-1:0] rddata;//当前数据
 reg [DSIZE-1:0] keepdata;//保存上一次的输出
+
 
 always @ (posedge rclk or negedge rst_n)
     if(~rst_n) //异步复位
@@ -150,7 +149,7 @@ always @ (posedge rclk or negedge rst_n)
 always @ (posedge rclk)
     rddata <= buffer[rptr[ASIZE-1:0]];//输出的数据放进rddata
 
-assign rdata = rdack ? rddata : keepdata;//如果fifo不是空的，而且读取了数据，就输出rddata。如果没有读取，就保持上一次输出keepdata。
+assign rdata = rdack ? rddata : keepdata;//如果fifo不是空的，而且读取了数据，就输出rddata。如果没有读取，就保持上一次输出keepdata
 //----------读判断+数据输出+指针移动------------//
 
 //--------------写域fifo已使用空间------------
