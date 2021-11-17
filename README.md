@@ -3,7 +3,6 @@
 fifo_async.v为源文件，fifo_async.pdf为RTL视图。  
 testbench文件夹中有建立好的仿真工程，分别是VCS+Verdi和iverilog+gtkwave。喜欢哪个用哪个，配好环境make就行了。  
 iverilog+gtkwave加入windows支持。  
-如果觉得不错，可以去B站支持一下[详解异步FIFO原理与Verilog模型](https://www.bilibili.com/read/cv13048274)。  
 日后还会持续更新完善  
 ## 模块接口
 | 写入侧     |         |
@@ -75,6 +74,7 @@ begin
         w2rptr[j]=w2rptr[j+1]^rq2_wptr_grey[j];
 end
 ```
+如果觉得不错，可以去B站支持一下[详解异步FIFO原理与Verilog模型](https://www.bilibili.com/read/cv13048274)。  
 ## 功能仿真
 进入两种仿真文件夹查看  
 
