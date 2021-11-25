@@ -1,3 +1,4 @@
+chcp 65001
 echo "开始编译"
 iverilog -g2005-sv -o tb -y ..\module ..\tb\tb_fifo_async.sv
 echo "生成波形"
