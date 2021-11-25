@@ -1,6 +1,6 @@
-echo "©╙й╪╠ЮрК"
+echo "Е╪─Е╖▀Г╪√Х╞▒"
 iverilog -g2005-sv -o tb -y ..\module ..\tb\tb_fifo_async.sv
-echo "иЗЁи╡╗пн"
-vvp -n tb -lxt2
-echo "отй╬╡╗пн"
+echo "Г■÷Ф┬░ФЁ╒Е╫╒"
+vvp -n tb -lxt
+echo "Ф≤╬Г╓╨ФЁ╒Е╫╒"
 gtkwave tb.lxt
