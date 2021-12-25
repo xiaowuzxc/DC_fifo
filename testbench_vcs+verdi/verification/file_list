@@ -1,2 +1,2 @@
-./../module/fifo_async.v
+./../../fifo_async.v
 ./../tb/tb_fifo_async.sv

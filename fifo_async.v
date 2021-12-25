@@ -27,14 +27,14 @@ module fifo_async #(
     output reg  [ASIZE-1:0] wuse,//写域fifo已使用空间  
 
     input  wire             rclk,//读时钟
-    output wire [DSIZE-1:0] rdata,//读数据
+    output reg  [DSIZE-1:0] rdata,//读数据
     output wire             r_empty,//读空信号，1有效，组合逻辑输出
     input  wire             r_en,//读使能，1有效
-    output reg              r_ok,//可读信号，1有效，读使能且非空
+    output reg 				r_ok,//可读信号，1有效，读使能且非空
     output reg  [ASIZE-1:0] ruse//读域fifo已使用空间
 );
 
-reg  [DSIZE-1:0] buffer [1<<ASIZE:1];  // 让综合器自己综合真双端RAM
+reg  [DSIZE-1:0] buffer [(1<<ASIZE)-1:0];  // 让综合器自己综合真双端RAM
 
 reg [ASIZE:0] wptr,//写指针 
 wq_wptr_grey, //写指针格雷码，写时钟打1拍
@@ -44,7 +44,6 @@ w2rptr;//二进制写指针，读时钟域的
 wire [ASIZE:0]wptr_grey;//写指针格雷码
 
 reg [ASIZE:0] rptr, //读指针
-
 rq_rptr_grey, //读指针格雷码，读时钟打1拍
 wq1_rptr_grey, //读指针格雷码，写时钟打1拍
 wq2_rptr_grey, //读指针格雷码，写时钟打2拍
@@ -59,7 +58,6 @@ begin
     for(i=ASIZE-2;i>=0;i=i-1)        
         r2wptr[i]=r2wptr[i+1]^wq2_rptr_grey[i];//行为级描述，综合成组合逻辑
 end
-
 
 assign rptr_grey = (rptr >> 1) ^ rptr;//二进制读指针转格雷码
 integer j;
@@ -107,49 +105,39 @@ always @ (posedge wclk or negedge rst_n)//写时钟域打一拍
 assign w_full  = wq2_rptr_grey == {~wptr_grey[ASIZE:ASIZE-1], wptr_grey[ASIZE-2:0]};//写满判断，指针绕了一圈，最高位不同
 assign r_empty = rq2_wptr_grey == rptr_grey;//读空判断
 
-
 always @ (posedge wclk or negedge rst_n)
     if(~rst_n) //异步复位
         wptr <= 0;
     else 
     begin
         if(w_en & ~w_full)
+        begin
             wptr <= wptr + 1;//写指针++
+        	buffer[wptr[ASIZE-1:0]] <= wdata;//写数据
+        end
     end
-
-always @ (posedge wclk)
-    if(w_en & ~w_full)
-        buffer[wptr[ASIZE-1:0]] <= wdata;//写数据
-
 //----------读判断+数据输出+指针移动------------//
-wire            rdready = ~r_ok | r_en;//准备去读取，为1
-reg             rdack;//fifo不是空的，而且读取了，为1
 reg [DSIZE-1:0] rddata;//当前数据
 reg [DSIZE-1:0] keepdata;//保存上一次的输出
-
 
 always @ (posedge rclk or negedge rst_n)
     if(~rst_n) //异步复位
     begin
         r_ok <= 1'b0;
-        rdack <= 1'b0;
         rptr <= 0;
         keepdata <= 0;
     end 
     else 
     begin
-        r_ok <= ~r_empty | ~rdready;//可读判断
-        rdack <= ~r_empty & rdready;//fifo不是空的，而且读取了
-        if(~r_empty & rdready)
+        if(~r_empty & r_en)
+        begin
             rptr <= rptr + 1;//读完地址++
-        if(rdack)
-            keepdata <= rddata;//读取的数据放进另一个寄存器keepdata
+            rdata <= buffer[rptr[ASIZE-1:0]];//输出的数据放进rddata
+            r_ok <= 1'b1;
+        end
+        else
+        	r_ok <= 1'b0;
     end
-
-always @ (posedge rclk)
-    rddata <= buffer[rptr[ASIZE-1:0]];//输出的数据放进rddata
-
-assign rdata = rdack ? rddata : keepdata;//如果fifo不是空的，而且读取了数据，就输出rddata。如果没有读取，就保持上一次输出keepdata
 //----------读判断+数据输出+指针移动------------//
 
 //--------------写域fifo已使用空间------------
