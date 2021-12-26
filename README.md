@@ -19,7 +19,7 @@ iverilog+gtkwave加入windows支持。
 | rdata    | 数据输出端口  |
 | r_en   | 置1读使能   |
 | r_empty | 置1为读空   |
-| r_ok   | 读取成功   |
+| r_ok   | 数据有效   |
 | ruse | fifo使用量 |
 
 ## 讲解
